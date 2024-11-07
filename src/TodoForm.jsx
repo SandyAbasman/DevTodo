@@ -5,20 +5,18 @@ export default function TodoForm() {
   const [todo, setTodo] = useState("");
   const [allTodo, setAllTodo] = useState([]);
   const [isEditing, setIsEditing] = useState(null);
-  //   const [initialRender, setInitialRender] = useState(true);
+  const [initialRender, setInitialRender] = useState(true);
 
   // retrive todoarray from local storage
-  //   useEffect(() => {
-  //     //only fetch if initial render is not true
-  //     if (!initialRender) {
-  //       const savedTodo = localStorage.getItem("todoArray");
-  //       if (savedTodo) {
-  //         const gottenTodo = JSON.parse(savedTodo);
-  //         setAllTodo(gottenTodo);
-  //       }
-  //     }
-  //     setInitialRender(true);
-  //   }, [initialRender]);
+  useEffect(() => {
+    //only fetch if initial render is not true
+
+    const savedTodo = localStorage.getItem("todoArray");
+    if (savedTodo) {
+      setAllTodo(JSON.parse(savedTodo));
+    }
+    setInitialRender(true);
+  }, []);
 
   function submissionManager(e) {
     e.preventDefault();
@@ -48,9 +46,10 @@ export default function TodoForm() {
 
   //save todo to local storage
   useEffect(() => {
-    localStorage.setItem("todoArray", JSON.stringify(allTodo));
-    // setInitialRender(true);
-  }, [allTodo]);
+    if (!initialRender) {
+      localStorage.setItem("todoArray", JSON.stringify(allTodo));
+    }
+  }, [allTodo, initialRender]);
 
   return (
     <div className="h-auto w-[40%] flex flex-col gap-8">
