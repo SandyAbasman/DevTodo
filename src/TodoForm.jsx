@@ -10,12 +10,11 @@ export default function TodoForm() {
   // retrive todoarray from local storage
   useEffect(() => {
     //only fetch if initial render is not true
-
     const savedTodo = localStorage.getItem("todoArray");
     if (savedTodo) {
       setAllTodo(JSON.parse(savedTodo));
     }
-    setInitialRender(true);
+    setInitialRender(false);
   }, []);
 
   function submissionManager(e) {
