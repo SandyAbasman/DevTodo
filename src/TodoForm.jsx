@@ -6,6 +6,7 @@ export default function TodoForm() {
   const [allTodo, setAllTodo] = useState([]);
   const [isEditing, setIsEditing] = useState(null);
   const [initialRender, setInitialRender] = useState(true);
+  // const [toggle, setToggle] = useState(false);
 
   // retrive todoarray from local storage
   useEffect(() => {
@@ -21,18 +22,18 @@ export default function TodoForm() {
     e.preventDefault();
     if (isEditing !== null) {
       const updatedAllTodo = [...allTodo];
-      updatedAllTodo[isEditing] = todo;
+      updatedAllTodo[isEditing] = { ...updatedAllTodo[isEditing], text: todo };
       setAllTodo(updatedAllTodo);
       setIsEditing(null);
     } else {
-      setAllTodo([...allTodo, todo]);
+      setAllTodo([...allTodo, { text: todo, completed: false }]);
       //   console.log("normal mode");
     }
     setTodo("");
   }
 
   function editTodo(index) {
-    setTodo(allTodo[index]);
+    setTodo(allTodo[index].text);
     setIsEditing(index);
   }
 
@@ -41,6 +42,15 @@ export default function TodoForm() {
       return filteredIndex !== index;
     });
     setAllTodo(filterdTodo);
+  }
+
+  function toggleTodo(index) {
+    const updatedAllTodo = [...allTodo];
+    updatedAllTodo[index] = {
+      ...updatedAllTodo[index],
+      completed: !updatedAllTodo[index].completed,
+    };
+    setAllTodo(updatedAllTodo);
   }
 
   //save todo to local storage
@@ -81,6 +91,7 @@ export default function TodoForm() {
               key={index}
               editTodo={editTodo}
               deleteTodo={deleteTodo}
+              toggleTodo={toggleTodo}
             />
           );
         })}
